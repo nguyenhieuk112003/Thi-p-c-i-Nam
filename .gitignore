@@ -1,0 +1,10 @@
+# Python scratch and analysis scripts
+*.py
+*.txt
+*.bak
+*.bak*
+*.json
+
+# OS files
+.DS_Store
+Thumbs.db
