@@ -1422,7 +1422,7 @@ div[style*="ladipage.svg"] {
 <script>
 // LOGIC CHO PHẦN XÁC NHẬN THAM GIA (RSVP)
 // Điền link Google Apps Script Webhook vào đây nếu muốn lưu trực tiếp về Google Sheets:
-window.RSVP_GOOGLE_SHEET_URL = ''; 
+window.RSVP_GOOGLE_SHEET_URL = 'https://script.google.com/macros/s/AKfycbyuT1yqV2XfSGoW42_4RnMR5Ij-qrBbburadsXC1TzAUZK8eJk5Ur9R8m_aFvO1KRDl/exec'; 
 
 (function() {
   const RSVP_STORAGE_KEY = 'wedding_rsvp_nam_trang';
@@ -1535,7 +1535,7 @@ window.RSVP_GOOGLE_SHEET_URL = '';
         fetch(window.RSVP_GOOGLE_SHEET_URL, {
           method: 'POST',
           mode: 'no-cors',
-          headers: { 'Content-Type': 'application/json' },
+          headers: { 'Content-Type': 'text/plain;charset=utf-8' },
           body: JSON.stringify(record)
         });
       } catch(err) {
