@@ -1036,6 +1036,583 @@ div[style*="ladipage.svg"] {
 })();
 </script>
 <!-- KẾT THÚC: PHẦN ĐỂ LẠI CHÚC PHÚC -->
+
+<!-- BẮT ĐẦU: PHẦN XÁC NHẬN THAM DỰ (RSVP) -->
+<div id="SECTION_RSVP" class="ladi-section rsvp-custom-section">
+  <div class="rsvp-card-wrapper">
+    <!-- Header -->
+    <div class="rsvp-header">
+      <div class="rsvp-cursive-sub">Sự hiện diện của bạn</div>
+      <h2 class="rsvp-main-title">XÁC NHẬN THAM DỰ</h2>
+      <div class="rsvp-flourish">
+        <span class="rsvp-flourish-line"></span>
+        <span class="rsvp-flourish-icon">💌</span>
+        <span class="rsvp-flourish-line"></span>
+      </div>
+      <p class="rsvp-intro-text">
+        Để giúp cô dâu & chú rể chuẩn bị đón tiếp chu đáo và trọn vẹn nhất, xin vui lòng xác nhận sự hiện diện của bạn trước ngày cưới nhé!
+      </p>
+    </div>
+
+    <!-- RSVP Form Container -->
+    <div class="rsvp-box-container">
+      <form id="rsvp-form" class="rsvp-input-form" onsubmit="handleSendRSVP(event)">
+        <!-- Tên khách mời -->
+        <div class="rsvp-form-row">
+          <label for="rsvp-guest-name">Họ và tên của bạn <span class="rsvp-req">*</span></label>
+          <input type="text" id="rsvp-guest-name" placeholder="Ví dụ: Nguyễn Văn A..." required autocomplete="name">
+        </div>
+
+        <!-- Số điện thoại -->
+        <div class="rsvp-form-row">
+          <label for="rsvp-guest-phone">Số điện thoại</label>
+          <input type="tel" id="rsvp-guest-phone" placeholder="Nhập số điện thoại liên hệ (không bắt buộc)..." autocomplete="tel">
+        </div>
+
+        <!-- Khách mời của ai -->
+        <div class="rsvp-form-row">
+          <label for="rsvp-side">Bạn là khách mời của</label>
+          <select id="rsvp-side">
+            <option value="Khách mời Nhà Gái (Hà Trang)">Khách mời Nhà Gái (Cô dâu Hà Trang)</option>
+            <option value="Khách mời Nhà Trai (Phương Nam)">Khách mời Nhà Trai (Chú rể Phương Nam)</option>
+            <option value="Bạn chung của cả hai">Bạn chung của cả hai</option>
+            <option value="Người thân / Họ hàng">Người thân / Họ hàng</option>
+          </select>
+        </div>
+
+        <!-- Sự kiện tham dự -->
+        <div class="rsvp-form-row">
+          <label for="rsvp-event">Sự kiện bạn sẽ tham dự</label>
+          <select id="rsvp-event">
+            <option value="Lễ Vu Quy & Bữa cơm thân mật (17/10/2026 - Nhà Gái)">Lễ Vu Quy & Bữa cơm thân mật (17/10/2026 - Nhà Gái)</option>
+            <option value="Tiệc Cưới & Lễ Thành Hôn (18/10/2026 - Nhà Trai)">Tiệc Cưới & Lễ Thành Hôn (18/10/2026 - Nhà Trai)</option>
+            <option value="Cả hai ngày vui (17/10 & 18/10/2026)">Cả hai ngày vui (17/10 & 18/10/2026)</option>
+          </select>
+        </div>
+
+        <!-- Lựa chọn có tham dự hay không -->
+        <div class="rsvp-form-row">
+          <label>Bạn có thể tham dự chứ? <span class="rsvp-req">*</span></label>
+          <div class="rsvp-attendance-cards">
+            <label class="rsvp-attend-card active" id="label-attend-yes">
+              <input type="radio" name="rsvp_attending" value="yes" checked onchange="toggleRSVPAttendance(true)">
+              <div class="rsvp-attend-icon">❤️</div>
+              <div class="rsvp-attend-title">Chắc chắn sẽ đến</div>
+              <div class="rsvp-attend-sub">Chung vui cùng hai bạn</div>
+            </label>
+            <label class="rsvp-attend-card" id="label-attend-no">
+              <input type="radio" name="rsvp_attending" value="no" onchange="toggleRSVPAttendance(false)">
+              <div class="rsvp-attend-icon">😢</div>
+              <div class="rsvp-attend-title">Rất tiếc vắng mặt</div>
+              <div class="rsvp-attend-sub">Gửi lời chúc từ xa</div>
+            </label>
+          </div>
+        </div>
+
+        <!-- Số người đi cùng (ẩn nếu chọn vắng mặt) -->
+        <div class="rsvp-form-row" id="rsvp-guest-count-row">
+          <label for="rsvp-guest-count">Số người tham dự đi cùng bạn</label>
+          <select id="rsvp-guest-count">
+            <option value="1">1 người (Đi một mình)</option>
+            <option value="2">2 người (Đi cùng người thương / bạn bè)</option>
+            <option value="3">3 người (Đi cùng gia đình)</option>
+            <option value="4+">4 người trở lên</option>
+          </select>
+        </div>
+
+        <!-- Lời nhắn thêm -->
+        <div class="rsvp-form-row">
+          <label for="rsvp-note">Lời nhắn gửi thêm</label>
+          <textarea id="rsvp-note" rows="2" placeholder="Ghi chú thêm cho cô dâu & chú rể (nếu có)..."></textarea>
+        </div>
+
+        <!-- Nút Gửi Xác Nhận -->
+        <button type="submit" id="btn-submit-rsvp" class="rsvp-btn-send">
+          <span class="btn-text">XÁC NHẬN THAM DỰ</span>
+          <span class="btn-icon">💌</span>
+        </button>
+      </form>
+
+      <!-- Toast thông báo -->
+      <div id="rsvp-toast" class="rsvp-toast-message"></div>
+
+      <!-- Thẻ trạng thái sau khi đã gửi xác nhận -->
+      <div id="rsvp-status-card" class="rsvp-confirmed-box" style="display:none;">
+        <div class="rsvp-confirmed-header">
+          <span class="confirmed-check">🎉</span>
+          <span class="confirmed-title">Xác nhận của bạn đã được ghi nhận!</span>
+        </div>
+        <div id="rsvp-confirmed-details" class="rsvp-confirmed-body"></div>
+        <button type="button" class="rsvp-btn-edit" onclick="handleEditRSVP()">Thay đổi thông tin xác nhận ✏️</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+/* STYLES CHO PHẦN XÁC NHẬN THAM GIA (RSVP) */
+.rsvp-custom-section {
+  width: 100% !important;
+  background: #FAF6F0 !important;
+  padding: 40px 15px 45px !important;
+  box-sizing: border-box !important;
+  position: relative !important;
+  border-top: 2px solid rgba(117, 36, 24, 0.12) !important;
+  border-bottom: 2px solid rgba(117, 36, 24, 0.15) !important;
+}
+
+.rsvp-card-wrapper {
+  max-width: 390px !important;
+  margin: 0 auto !important;
+  box-sizing: border-box !important;
+}
+
+.rsvp-header {
+  text-align: center !important;
+  margin-bottom: 20px !important;
+}
+
+.rsvp-cursive-sub {
+  font-family: 'Great Vibes', 'Playfair Display', cursive, serif !important;
+  font-size: 26px !important;
+  color: #9B3122 !important;
+  margin-bottom: 2px !important;
+  letter-spacing: 1px !important;
+}
+
+.rsvp-main-title {
+  font-family: 'Philosopher', 'Yeseva One', serif !important;
+  font-size: 23px !important;
+  font-weight: 700 !important;
+  color: #752418 !important;
+  letter-spacing: 1.5px !important;
+  text-transform: uppercase !important;
+  margin: 0 0 10px !important;
+}
+
+.rsvp-flourish {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 12px !important;
+  margin-bottom: 12px !important;
+}
+
+.rsvp-flourish-line {
+  display: inline-block !important;
+  width: 50px !important;
+  height: 1px !important;
+  background: linear-gradient(90deg, transparent, #752418, transparent) !important;
+}
+
+.rsvp-flourish-icon {
+  font-size: 16px !important;
+  color: #752418 !important;
+}
+
+.rsvp-intro-text {
+  font-family: 'Jura', 'Open Sans', sans-serif !important;
+  font-size: 13.5px !important;
+  line-height: 1.6 !important;
+  color: #4a4a4a !important;
+  margin: 0 auto !important;
+  max-width: 360px !important;
+}
+
+.rsvp-box-container {
+  width: 100% !important;
+}
+
+.rsvp-input-form {
+  background: #ffffff !important;
+  border: 1.5px solid #EADDCF !important;
+  border-radius: 16px !important;
+  padding: 22px 18px 24px !important;
+  box-shadow: 0 4px 20px rgba(117, 36, 24, 0.06) !important;
+  box-sizing: border-box !important;
+}
+
+.rsvp-form-row {
+  margin-bottom: 16px !important;
+  text-align: left !important;
+}
+
+.rsvp-form-row label {
+  display: block !important;
+  font-family: 'Jura', sans-serif !important;
+  font-size: 13px !important;
+  font-weight: 700 !important;
+  color: #551D14 !important;
+  margin-bottom: 6px !important;
+  letter-spacing: 0.3px !important;
+}
+
+.rsvp-req {
+  color: #c92a2a !important;
+}
+
+.rsvp-form-row input[type="text"],
+.rsvp-form-row input[type="tel"],
+.rsvp-form-row select,
+.rsvp-form-row textarea {
+  width: 100% !important;
+  padding: 10px 14px !important;
+  border: 1.5px solid #E2D1C3 !important;
+  border-radius: 10px !important;
+  font-family: 'Open Sans', sans-serif !important;
+  font-size: 13.5px !important;
+  color: #333 !important;
+  background: #FAFAFA !important;
+  box-sizing: border-box !important;
+  transition: all 0.25s ease !important;
+  outline: none !important;
+}
+
+.rsvp-form-row input:focus,
+.rsvp-form-row select:focus,
+.rsvp-form-row textarea:focus {
+  border-color: #752418 !important;
+  background: #fff !important;
+  box-shadow: 0 0 0 3px rgba(117, 36, 24, 0.12) !important;
+}
+
+/* Card buttons for attendance */
+.rsvp-attendance-cards {
+  display: flex !important;
+  gap: 10px !important;
+  margin-top: 4px !important;
+}
+
+.rsvp-attend-card {
+  flex: 1 !important;
+  border: 1.5px solid #E2D1C3 !important;
+  border-radius: 12px !important;
+  padding: 12px 8px !important;
+  text-align: center !important;
+  cursor: pointer !important;
+  background: #FAFAFA !important;
+  transition: all 0.25s ease !important;
+  position: relative !important;
+}
+
+.rsvp-attend-card input[type="radio"] {
+  position: absolute !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
+
+.rsvp-attend-card.active {
+  border-color: #752418 !important;
+  background: #FDF3F1 !important;
+  box-shadow: 0 3px 10px rgba(117, 36, 24, 0.12) !important;
+}
+
+.rsvp-attend-icon {
+  font-size: 20px !important;
+  margin-bottom: 4px !important;
+}
+
+.rsvp-attend-title {
+  font-family: 'Jura', sans-serif !important;
+  font-size: 13px !important;
+  font-weight: 700 !important;
+  color: #752418 !important;
+  line-height: 1.3 !important;
+}
+
+.rsvp-attend-sub {
+  font-size: 11px !important;
+  color: #777 !important;
+  margin-top: 2px !important;
+  line-height: 1.2 !important;
+}
+
+/* Submit button */
+.rsvp-btn-send {
+  width: 100% !important;
+  padding: 13px 20px !important;
+  background: linear-gradient(135deg, #752418, #9B3122) !important;
+  border: none !important;
+  border-radius: 30px !important;
+  color: #fff !important;
+  font-family: 'Jura', 'Philosopher', sans-serif !important;
+  font-size: 14.5px !important;
+  font-weight: 700 !important;
+  letter-spacing: 1.2px !important;
+  cursor: pointer !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 8px !important;
+  box-shadow: 0 4px 14px rgba(117, 36, 24, 0.3) !important;
+  transition: all 0.3s ease !important;
+  margin-top: 8px !important;
+}
+
+.rsvp-btn-send:hover {
+  transform: translateY(-2px) !important;
+  box-shadow: 0 6px 18px rgba(117, 36, 24, 0.4) !important;
+  background: linear-gradient(135deg, #8a2b1d, #ad3626) !important;
+}
+
+.rsvp-btn-send:active {
+  transform: translateY(1px) !important;
+}
+
+/* Toast message */
+.rsvp-toast-message {
+  display: none;
+  background: #4A8C57 !important;
+  color: #ffffff !important;
+  padding: 12px 16px !important;
+  border-radius: 10px !important;
+  font-family: 'Jura', sans-serif !important;
+  font-size: 13.5px !important;
+  font-weight: 600 !important;
+  line-height: 1.5 !important;
+  text-align: center !important;
+  margin-top: 14px !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
+  animation: rsvpFadeIn 0.35s ease !important;
+}
+
+/* Confirmed Box */
+.rsvp-confirmed-box {
+  background: #ffffff !important;
+  border: 1.5px solid #2e7d32 !important;
+  border-radius: 16px !important;
+  padding: 20px 18px !important;
+  margin-top: 14px !important;
+  box-shadow: 0 4px 20px rgba(46, 125, 50, 0.1) !important;
+  text-align: left !important;
+}
+
+.rsvp-confirmed-header {
+  display: flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+  margin-bottom: 12px !important;
+  padding-bottom: 10px !important;
+  border-bottom: 1px dashed #d7ebd8 !important;
+}
+
+.confirmed-check {
+  font-size: 20px !important;
+}
+
+.confirmed-title {
+  font-family: 'Jura', sans-serif !important;
+  font-size: 14px !important;
+  font-weight: 700 !important;
+  color: #2e7d32 !important;
+}
+
+.rsvp-confirmed-body {
+  font-family: 'Open Sans', sans-serif !important;
+  font-size: 13px !important;
+  line-height: 1.6 !important;
+  color: #383838 !important;
+  margin-bottom: 14px !important;
+}
+
+.rsvp-btn-edit {
+  background: #f1f5f2 !important;
+  border: 1px solid #c5dfc8 !important;
+  color: #2e7d32 !important;
+  border-radius: 20px !important;
+  padding: 8px 16px !important;
+  font-size: 12.5px !important;
+  font-weight: 600 !important;
+  cursor: pointer !important;
+  display: block !important;
+  margin: 0 auto !important;
+  transition: all 0.2s !important;
+}
+
+.rsvp-btn-edit:hover {
+  background: #e1ede3 !important;
+}
+
+@keyframes rsvpFadeIn {
+  from { opacity: 0; transform: translateY(-6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+</style>
+
+<script>
+// LOGIC CHO PHẦN XÁC NHẬN THAM GIA (RSVP)
+(function() {
+  const RSVP_STORAGE_KEY = 'wedding_rsvp_nam_trang';
+
+  function getStoredRSVP() {
+    try {
+      const data = localStorage.getItem(RSVP_STORAGE_KEY);
+      if (data) return JSON.parse(data);
+    } catch(e) {}
+    return null;
+  }
+
+  function saveRSVP(record) {
+    try {
+      localStorage.setItem(RSVP_STORAGE_KEY, JSON.stringify(record));
+    } catch(e) {}
+  }
+
+  window.toggleRSVPAttendance = function(isAttending) {
+    const yesCard = document.getElementById('label-attend-yes');
+    const noCard = document.getElementById('label-attend-no');
+    const guestCountRow = document.getElementById('rsvp-guest-count-row');
+    const submitBtn = document.getElementById('btn-submit-rsvp');
+
+    if (isAttending) {
+      if (yesCard) yesCard.classList.add('active');
+      if (noCard) noCard.classList.remove('active');
+      if (guestCountRow) guestCountRow.style.display = 'block';
+      if (submitBtn) {
+        submitBtn.querySelector('.btn-text').textContent = 'XÁC NHẬN THAM DỰ';
+      }
+    } else {
+      if (yesCard) yesCard.classList.remove('active');
+      if (noCard) noCard.classList.add('active');
+      if (guestCountRow) guestCountRow.style.display = 'none';
+      if (submitBtn) {
+        submitBtn.querySelector('.btn-text').textContent = 'GỬI PHẢN HỒI';
+      }
+    }
+  };
+
+  function renderRSVPStatus() {
+    const saved = getStoredRSVP();
+    const form = document.getElementById('rsvp-form');
+    const statusCard = document.getElementById('rsvp-status-card');
+    const details = document.getElementById('rsvp-confirmed-details');
+
+    if (saved && statusCard && details) {
+      statusCard.style.display = 'block';
+      if (form) form.style.display = 'none';
+
+      const attendText = saved.attending === 'yes' 
+        ? '<strong style="color:#2e7d32;">Chắc chắn sẽ tham dự ❤️</strong>' 
+        : '<strong style="color:#c92a2a;">Rất tiếc không thể đến 😢</strong>';
+
+      details.innerHTML = `
+        <div style="margin-bottom: 4px;">👤 <strong>Khách mời:</strong> ${escapeHTML(saved.name)} ${saved.phone ? `(${escapeHTML(saved.phone)})` : ''}</div>
+        <div style="margin-bottom: 4px;">🤝 <strong>Phía:</strong> ${escapeHTML(saved.side)}</div>
+        <div style="margin-bottom: 4px;">📅 <strong>Sự kiện:</strong> ${escapeHTML(saved.event)}</div>
+        <div style="margin-bottom: 4px;">✨ <strong>Trạng thái:</strong> ${attendText}</div>
+        ${saved.attending === 'yes' ? `<div style="margin-bottom: 4px;">👥 <strong>Số lượng:</strong> ${saved.guestCount} người</div>` : ''}
+        ${saved.note ? `<div style="margin-top: 6px; font-style: italic; color: #555;">💬 <strong>Lời nhắn:</strong> “${escapeHTML(saved.note)}”</div>` : ''}
+      `;
+    } else {
+      if (statusCard) statusCard.style.display = 'none';
+      if (form) form.style.display = 'block';
+    }
+  }
+
+  function escapeHTML(str) {
+    if (!str) return '';
+    return str.replace(/[&<>'"]/g, 
+      tag => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[tag] || tag)
+    );
+  }
+
+  window.handleSendRSVP = function(e) {
+    e.preventDefault();
+    const nameInput = document.getElementById('rsvp-guest-name');
+    const phoneInput = document.getElementById('rsvp-guest-phone');
+    const sideSelect = document.getElementById('rsvp-side');
+    const eventSelect = document.getElementById('rsvp-event');
+    const attendRadios = document.getElementsByName('rsvp_attending');
+    const countSelect = document.getElementById('rsvp-guest-count');
+    const noteInput = document.getElementById('rsvp-note');
+    const toast = document.getElementById('rsvp-toast');
+
+    const name = nameInput.value.trim();
+    const phone = phoneInput ? phoneInput.value.trim() : '';
+    const side = sideSelect.value;
+    const eventVal = eventSelect.value;
+    
+    let attending = 'yes';
+    for (let r of attendRadios) {
+      if (r.checked) { attending = r.value; break; }
+    }
+    const guestCount = countSelect ? countSelect.value : '1';
+    const note = noteInput ? noteInput.value.trim() : '';
+
+    if (!name) return;
+
+    const record = {
+      name: name,
+      phone: phone,
+      side: side,
+      event: eventVal,
+      attending: attending,
+      guestCount: attending === 'yes' ? guestCount : '0',
+      note: note,
+      time: new Date().toLocaleString('vi-VN')
+    };
+
+    saveRSVP(record);
+    renderRSVPStatus();
+
+    // Show Toast
+    if (toast) {
+      toast.style.display = 'block';
+      if (attending === 'yes') {
+        toast.textContent = 'Cảm ơn ' + name + ' đã xác nhận tham dự! Phương Nam & Hà Trang rất mong được đón tiếp bạn! ❤️';
+      } else {
+        toast.textContent = 'Cảm ơn ' + name + ' đã phản hồi! Lời chúc của bạn là món quà ý nghĩa với cô dâu & chú rể! ✨';
+      }
+      setTimeout(() => {
+        toast.style.display = 'none';
+      }, 5000);
+    }
+  };
+
+  window.handleEditRSVP = function() {
+    const form = document.getElementById('rsvp-form');
+    const statusCard = document.getElementById('rsvp-status-card');
+    const saved = getStoredRSVP();
+
+    if (form) form.style.display = 'block';
+    if (statusCard) statusCard.style.display = 'none';
+
+    // Populate existing values
+    if (saved) {
+      const nameInput = document.getElementById('rsvp-guest-name');
+      const phoneInput = document.getElementById('rsvp-guest-phone');
+      const sideSelect = document.getElementById('rsvp-side');
+      const eventSelect = document.getElementById('rsvp-event');
+      const attendRadios = document.getElementsByName('rsvp_attending');
+      const countSelect = document.getElementById('rsvp-guest-count');
+      const noteInput = document.getElementById('rsvp-note');
+
+      if (nameInput) nameInput.value = saved.name || '';
+      if (phoneInput) phoneInput.value = saved.phone || '';
+      if (sideSelect) sideSelect.value = saved.side || sideSelect.value;
+      if (eventSelect) eventSelect.value = saved.event || eventSelect.value;
+      
+      const isYes = (saved.attending !== 'no');
+      for (let r of attendRadios) {
+        if (r.value === (isYes ? 'yes' : 'no')) r.checked = true;
+      }
+      toggleRSVPAttendance(isYes);
+
+      if (countSelect && saved.guestCount) countSelect.value = saved.guestCount;
+      if (noteInput) noteInput.value = saved.note || '';
+    }
+  };
+
+  // Run on load
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', renderRSVPStatus);
+  } else {
+    renderRSVPStatus();
+  }
+})();
+</script>
+<!-- KẾT THÚC: PHẦN XÁC NHẬN THAM DỰ (RSVP) -->
+
 <div id="SECTION7" class='ladi-section'><div class='ladi-section-background'></div><div class="ladi-container"><div id="IMAGE96" class='ladi-element'><div class='ladi-image'><div class="ladi-image-background"></div></div></div><div id="HEADLINE56" class='ladi-element ladi-animation-hidden'><h3 class='ladi-headline'    >GỬI QUÀ MỪNG</h3> </div><div data-action="true" id="GROUP222" class='ladi-element'><div class='ladi-group'><div id="GROUP223" class='ladi-element ladi-animation-hidden'><div class='ladi-group'><div id="BOX79" class='ladi-element'><div class='ladi-box ladi-transition'></div></div><div id="IMAGE91" class='ladi-element'><div class='ladi-image'><div class="ladi-image-background"></div></div></div></div></div><div data-action="true" id="GROUP224" class='ladi-element ladi-animation-hidden'><div class='ladi-group'><div id="BOX80" class='ladi-element'><div class='ladi-box'></div></div><div id="GROUP225" class='ladi-element'><div class='ladi-group'><div id="HEADLINE339" class='ladi-element'><h3 class='ladi-headline ladi-transition'    >Cô Dâu</h3> </div><div id="HEADLINE340" class='ladi-element'><h3 class='ladi-headline ladi-transition'    >&nbsp;Hà Trang&nbsp;</h3> </div></div></div><div id="GROUP226" class='ladi-element'><div class='ladi-group'><div id="BOX81" class='ladi-element'><div class='ladi-box ladi-transition'></div></div><div id="IMAGE92" class='ladi-element'><div class='ladi-image'><div class="ladi-image-background"></div></div></div></div></div><a href="images/QR_co_dau.jpg?v=wedding2026" download="QR_MungCuoi_HaTrang.jpg" target="_blank" id="BUTTON23" class='ladi-element'><div class='ladi-button ladi-transition'><div class="ladi-button-background"></div><div id="BUTTON_TEXT23" class='ladi-element ladi-button-headline'><p class='ladi-headline ladi-transition'    >Tải ảnh QR</p> </div></div></a></div></div></div></div><div data-action="true" id="GROUP221" class='ladi-element'><div class='ladi-group'><div id="GROUP209" class='ladi-element ladi-animation-hidden'><div class='ladi-group'><div id="BOX73" class='ladi-element'><div class='ladi-box ladi-transition'></div></div><div id="IMAGE87" class='ladi-element'><div class='ladi-image'><div class="ladi-image-background"></div></div></div></div></div><div data-action="true" id="GROUP220" class='ladi-element ladi-animation-hidden'><div class='ladi-group'><div id="BOX74" class='ladi-element'><div class='ladi-box'></div></div><div id="GROUP210" class='ladi-element'><div class='ladi-group'><div id="HEADLINE335" class='ladi-element'><h3 class='ladi-headline ladi-transition'    >Chú Rể</h3> </div><div id="HEADLINE336" class='ladi-element'><h3 class='ladi-headline ladi-transition'    >Phương Nam</h3> </div></div></div><div id="GROUP211" class='ladi-element'><div class='ladi-group'><div id="BOX75" class='ladi-element'><div class='ladi-box ladi-transition'></div></div><div id="IMAGE88" class='ladi-element'><div class='ladi-image'><div class="ladi-image-background"></div></div></div></div></div><a href="images/QR_nha_trai (1).jpg?v=wedding2026" download="QR_MungCuoi_PhuongNam.jpg" target="_blank" id="BUTTON22" class='ladi-element'><div class='ladi-button ladi-transition'><div class="ladi-button-background"></div><div id="BUTTON_TEXT22" class='ladi-element ladi-button-headline'><p class='ladi-headline ladi-transition'    >Tải ảnh QR</p> </div></div></a></div></div></div></div></div></div><div id="SECTION10" class='ladi-section'><div class='ladi-section-background'></div><div class="ladi-container"><div id="GROUP229" class='ladi-element'><div class='ladi-group'><div id="IMAGE98" class='ladi-element'><div class='ladi-image'><div class="ladi-image-background"></div></div></div><div id="HEADLINE342" class='ladi-element ladi-animation-hidden'><h3 class='ladi-headline'    >LỜI NGỎ</h3> </div></div></div><div id="PARAGRAPH231" class='ladi-element ladi-animation-hidden'><div class='ladi-paragraph ladi-transition'>Gửi đến gia đình và bạn bè thân mến,
 <br>Trong ngày trọng đại sắp tới – khi chúng mình chính thức bắt đầu một chặng đường mới của cuộc đời,
 <br>thật hạnh phúc và vinh dự biết bao khi được
