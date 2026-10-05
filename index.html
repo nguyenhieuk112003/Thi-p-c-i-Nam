@@ -1069,26 +1069,6 @@ div[style*="ladipage.svg"] {
           <input type="tel" id="rsvp-guest-phone" placeholder="Nhập số điện thoại liên hệ (không bắt buộc)..." autocomplete="tel">
         </div>
 
-        <!-- Khách mời của ai -->
-        <div class="rsvp-form-row">
-          <label for="rsvp-side">Bạn là khách mời của</label>
-          <select id="rsvp-side">
-            <option value="Khách mời Nhà Gái (Hà Trang)">Khách mời Nhà Gái (Cô dâu Hà Trang)</option>
-            <option value="Khách mời Nhà Trai (Phương Nam)">Khách mời Nhà Trai (Chú rể Phương Nam)</option>
-            <option value="Bạn chung của cả hai">Bạn chung của cả hai</option>
-            <option value="Người thân / Họ hàng">Người thân / Họ hàng</option>
-          </select>
-        </div>
-
-        <!-- Sự kiện tham dự -->
-        <div class="rsvp-form-row">
-          <label for="rsvp-event">Sự kiện bạn sẽ tham dự</label>
-          <select id="rsvp-event">
-            <option value="Lễ Vu Quy & Bữa cơm thân mật (17/10/2026 - Nhà Gái)">Lễ Vu Quy & Bữa cơm thân mật (17/10/2026 - Nhà Gái)</option>
-            <option value="Tiệc Cưới & Lễ Thành Hôn (18/10/2026 - Nhà Trai)">Tiệc Cưới & Lễ Thành Hôn (18/10/2026 - Nhà Trai)</option>
-            <option value="Cả hai ngày vui (17/10 & 18/10/2026)">Cả hai ngày vui (17/10 & 18/10/2026)</option>
-          </select>
-        </div>
 
         <!-- Lựa chọn có tham dự hay không -->
         <div class="rsvp-form-row">
@@ -1441,6 +1421,9 @@ div[style*="ladipage.svg"] {
 
 <script>
 // LOGIC CHO PHẦN XÁC NHẬN THAM GIA (RSVP)
+// Điền link Google Apps Script Webhook vào đây nếu muốn lưu trực tiếp về Google Sheets:
+window.RSVP_GOOGLE_SHEET_URL = ''; 
+
 (function() {
   const RSVP_STORAGE_KEY = 'wedding_rsvp_nam_trang';
 
@@ -1497,10 +1480,8 @@ div[style*="ladipage.svg"] {
 
       details.innerHTML = `
         <div style="margin-bottom: 4px;">👤 <strong>Khách mời:</strong> ${escapeHTML(saved.name)} ${saved.phone ? `(${escapeHTML(saved.phone)})` : ''}</div>
-        <div style="margin-bottom: 4px;">🤝 <strong>Phía:</strong> ${escapeHTML(saved.side)}</div>
-        <div style="margin-bottom: 4px;">📅 <strong>Sự kiện:</strong> ${escapeHTML(saved.event)}</div>
         <div style="margin-bottom: 4px;">✨ <strong>Trạng thái:</strong> ${attendText}</div>
-        ${saved.attending === 'yes' ? `<div style="margin-bottom: 4px;">👥 <strong>Số lượng:</strong> ${saved.guestCount} người</div>` : ''}
+        ${saved.attending === 'yes' ? `<div style="margin-bottom: 4px;">👥 <strong>Số người tham dự:</strong> ${saved.guestCount} người</div>` : ''}
         ${saved.note ? `<div style="margin-top: 6px; font-style: italic; color: #555;">💬 <strong>Lời nhắn:</strong> “${escapeHTML(saved.note)}”</div>` : ''}
       `;
     } else {
@@ -1529,8 +1510,6 @@ div[style*="ladipage.svg"] {
 
     const name = nameInput.value.trim();
     const phone = phoneInput ? phoneInput.value.trim() : '';
-    const side = sideSelect.value;
-    const eventVal = eventSelect.value;
     
     let attending = 'yes';
     for (let r of attendRadios) {
@@ -1544,13 +1523,25 @@ div[style*="ladipage.svg"] {
     const record = {
       name: name,
       phone: phone,
-      side: side,
-      event: eventVal,
       attending: attending,
       guestCount: attending === 'yes' ? guestCount : '0',
       note: note,
       time: new Date().toLocaleString('vi-VN')
     };
+
+    // Tự động gửi tới Google Sheets Webhook nếu được cấu hình
+    if (window.RSVP_GOOGLE_SHEET_URL && window.RSVP_GOOGLE_SHEET_URL.startsWith('http')) {
+      try {
+        fetch(window.RSVP_GOOGLE_SHEET_URL, {
+          method: 'POST',
+          mode: 'no-cors',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(record)
+        });
+      } catch(err) {
+        console.log('RSVP webhook error:', err);
+      }
+    }
 
     saveRSVP(record);
     renderRSVPStatus();
@@ -1589,8 +1580,6 @@ div[style*="ladipage.svg"] {
 
       if (nameInput) nameInput.value = saved.name || '';
       if (phoneInput) phoneInput.value = saved.phone || '';
-      if (sideSelect) sideSelect.value = saved.side || sideSelect.value;
-      if (eventSelect) eventSelect.value = saved.event || eventSelect.value;
       
       const isYes = (saved.attending !== 'no');
       for (let r of attendRadios) {
