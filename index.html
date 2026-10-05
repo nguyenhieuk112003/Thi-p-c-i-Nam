@@ -1063,12 +1063,6 @@ div[style*="ladipage.svg"] {
           <input type="text" id="rsvp-guest-name" placeholder="Ví dụ: Nguyễn Văn A..." required autocomplete="name">
         </div>
 
-        <!-- Số điện thoại -->
-        <div class="rsvp-form-row">
-          <label for="rsvp-guest-phone">Số điện thoại</label>
-          <input type="tel" id="rsvp-guest-phone" placeholder="Nhập số điện thoại liên hệ (không bắt buộc)..." autocomplete="tel">
-        </div>
-
 
         <!-- Lựa chọn có tham dự hay không -->
         <div class="rsvp-form-row">
@@ -1479,7 +1473,7 @@ window.RSVP_GOOGLE_SHEET_URL = 'https://script.google.com/macros/s/AKfycbyuT1yqV
         : '<strong style="color:#c92a2a;">Rất tiếc không thể đến 😢</strong>';
 
       details.innerHTML = `
-        <div style="margin-bottom: 4px;">👤 <strong>Khách mời:</strong> ${escapeHTML(saved.name)} ${saved.phone ? `(${escapeHTML(saved.phone)})` : ''}</div>
+        <div style="margin-bottom: 4px;">👤 <strong>Khách mời:</strong> ${escapeHTML(saved.name)}</div>
         <div style="margin-bottom: 4px;">✨ <strong>Trạng thái:</strong> ${attendText}</div>
         ${saved.attending === 'yes' ? `<div style="margin-bottom: 4px;">👥 <strong>Số người tham dự:</strong> ${saved.guestCount} người</div>` : ''}
         ${saved.note ? `<div style="margin-top: 6px; font-style: italic; color: #555;">💬 <strong>Lời nhắn:</strong> “${escapeHTML(saved.note)}”</div>` : ''}
@@ -1509,7 +1503,6 @@ window.RSVP_GOOGLE_SHEET_URL = 'https://script.google.com/macros/s/AKfycbyuT1yqV
     const toast = document.getElementById('rsvp-toast');
 
     const name = nameInput.value.trim();
-    const phone = phoneInput ? phoneInput.value.trim() : '';
     
     let attending = 'yes';
     for (let r of attendRadios) {
@@ -1522,7 +1515,7 @@ window.RSVP_GOOGLE_SHEET_URL = 'https://script.google.com/macros/s/AKfycbyuT1yqV
 
     const record = {
       name: name,
-      phone: phone,
+      phone: '',
       attending: attending,
       guestCount: attending === 'yes' ? guestCount : '0',
       note: note,
@@ -1579,7 +1572,6 @@ window.RSVP_GOOGLE_SHEET_URL = 'https://script.google.com/macros/s/AKfycbyuT1yqV
       const noteInput = document.getElementById('rsvp-note');
 
       if (nameInput) nameInput.value = saved.name || '';
-      if (phoneInput) phoneInput.value = saved.phone || '';
       
       const isYes = (saved.attending !== 'no');
       for (let r of attendRadios) {
